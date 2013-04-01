@@ -48,13 +48,15 @@ module CsvMapper
     # You can specify aliases to rename fields to prevent conflicts and/or improve readability and compatibility.
     #
     # i.e. read_attributes_from_file('files+' => 'files_plus', 'files-' => 'files_minus)
-    def read_attributes_from_file aliases = {}
+    def read_attributes_from_file opts = {}
+      opts = {downcase: true, aliases: {}}.merge(opts)
       attributes = FasterCSV.new(@csv_data, @parser_options).readline
       @start_at_row = [ @start_at_row, 1 ].max
       @csv_data.rewind
       attributes.each_with_index do |name, index|
         name.strip!
-        use_name = aliases[name] || name.gsub(/\s+/, '_').gsub(/[\W]+/, '').downcase
+        use_name = opts[:aliases][name] || name.gsub(/\s+/, '_').gsub(/[\W]+/, '')
+        use_name.downcase! if opts[:downcase]
         add_attribute use_name, index
       end
     end

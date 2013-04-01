@@ -44,13 +44,13 @@ Although CsvMapper has no dependency on ActiveRecord; it's easy to import a CSV 
   results = CsvMapper.import('/path/to/file.csv') do
     map_to Person # Map to the Person ActiveRecord class (defined above) instead of the default Struct.
     after_row lambda{|row, person| person.save }  # Call this lambda and save each record after it's parsed.
-		
+    
     start_at_row 1
     [first_name, last_name, age]
   end
-	
+  
 See CsvMapper for a more detailed description
-	
+  
 == REQUIREMENTS:
 
 FasterCSV[http://fastercsv.rubyforge.org/] on pre 1.9 versions of Ruby
